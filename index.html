@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulário Google Sheets</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #e3f2fd, #bbdefb);
-      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      min-height: 100vh;
     }
     .container {
       background: #fff;
@@ -19,7 +19,7 @@
       border-radius: 15px;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
       width: 90%;
-      max-width: 400px;
+      max-width: 420px;
     }
     h1 {
       text-align: center;
@@ -28,7 +28,7 @@
     label {
       font-weight: bold;
       display: block;
-      margin-top: 15px;
+      margin-top: 12px;
     }
     input, textarea {
       width: 100%;
@@ -40,7 +40,7 @@
     button {
       margin-top: 20px;
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       background: #1976d2;
       color: #fff;
       border: none;
@@ -68,33 +68,49 @@
       <label>Email:</label>
       <input type="email" name="email" required>
 
+      <label>Telefone:</label>
+      <input type="text" name="telefone">
+
+      <label>Cargo:</label>
+      <input type="text" name="cargo">
+
+      <label>Setor:</label>
+      <input type="text" name="setor">
+
       <label>Mensagem:</label>
       <textarea name="mensagem" rows="4" required></textarea>
 
       <button type="submit">Enviar</button>
     </form>
+
     <p id="msg"></p>
+    <button onclick="abrirPlanilha()">📊 Abrir Planilha</button>
   </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwKNqftaXMDUsmRE6rOqyGa60OL5JuBdJbuYx-OuBP05qPUw_pxj8Jj3mTu9J0OBWd1Zw/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxSUsVkeLNbL787ZetPgIYDpAOD-HuwWY7_tnUXFjV2c4FL89y2tFENC6aXzUYlyToAdw/exec";
     const form = document.getElementById('dataForm');
     const msg = document.getElementById('msg');
 
     form.addEventListener('submit', e => {
       e.preventDefault();
-      msg.textContent = "Enviando...";
-      
+      msg.textContent = "⏳ Enviando...";
+
       fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => {
+        .then(response => response.text())
+        .then(result => {
           msg.textContent = "✅ Dados enviados com sucesso!";
           form.reset();
         })
         .catch(error => {
           msg.textContent = "❌ Erro ao enviar!";
-          console.error('Erro!', error.message);
+          console.error('Erro!', error);
         });
     });
+
+    function abrirPlanilha() {
+      window.open("https://docs.google.com/spreadsheets/d/15-XnHRyT30H2h6DBr2kWi1-Th_LfhkamQtLrlKs7DSg/edit", "_blank");
+    }
   </script>
 </body>
 </html>
