@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulário Google Sheets</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 400px;
+    }
+    h1 {
+      text-align: center;
+      color: #1976d2;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #1565c0;
+    }
+    #msg {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Enviar Dados</h1>
+    <form id="dataForm">
+      <label>Nome:</label>
+      <input type="text" name="nome" required>
+
+      <label>Email:</label>
+      <input type="email" name="email" required>
+
+      <label>Mensagem:</label>
+      <textarea name="mensagem" rows="4" required></textarea>
+
+      <button type="submit">Enviar</button>
+    </form>
+    <p id="msg"></p>
+  </div>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwKNqftaXMDUsmRE6rOqyGa60OL5JuBdJbuYx-OuBP05qPUw_pxj8Jj3mTu9J0OBWd1Zw/exec";
+    const form = document.getElementById('dataForm');
+    const msg = document.getElementById('msg');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      msg.textContent = "Enviando...";
+      
+      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+          msg.textContent = "✅ Dados enviados com sucesso!";
+          form.reset();
+        })
+        .catch(error => {
+          msg.textContent = "❌ Erro ao enviar!";
+          console.error('Erro!', error.message);
+        });
+    });
+  </script>
+</body>
+</html>
